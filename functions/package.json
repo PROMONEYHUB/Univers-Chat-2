@@ -1,0 +1,17 @@
+{
+  "name": "univers-chat-functions",
+  "description": "Trusted backend Cloud Functions for Univers Chat FCM push notifications and incoming call delivery.",
+  "scripts": {
+    "test": "node --test index.test.js",
+    "deploy": "firebase deploy --only functions"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^12.7.0",
+    "firebase-functions": "^6.3.0"
+  },
+  "private": true
+}

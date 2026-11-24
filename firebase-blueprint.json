@@ -1,0 +1,465 @@
+{
+  "entities": {
+    "PrivateUser": {
+      "title": "PrivateUser",
+      "description": "Private user account record containing PII and personal preferences, strictly isolated to the owner.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Authenticated Firebase UID matching the document ID."
+        },
+        "email": {
+          "type": "string",
+          "description": "User email address from Google Sign-In."
+        },
+        "readReceiptsEnabled": {
+          "type": "boolean",
+          "description": "Whether read receipts are enabled for this user."
+        },
+        "notificationsEnabled": {
+          "type": "boolean",
+          "description": "Whether push and in-app alert banners are enabled."
+        },
+        "notificationPreviewEnabled": {
+          "type": "boolean",
+          "description": "Whether notification alerts include sender message preview text."
+        },
+        "onlineStatusVisible": {
+          "type": "boolean",
+          "description": "Whether this user shares live online status and last seen time."
+        },
+        "fcmTokens": {
+          "type": "object",
+          "description": "Bounded map of per-device ID to active Firebase Cloud Messaging registration token."
+        },
+        "blockedUserIds": {
+          "type": "array",
+          "description": "Bounded list of user UIDs blocked by this user."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp (FieldValue.serverTimestamp()) when account was created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp (FieldValue.serverTimestamp()) when account was last updated."
+        }
+      },
+      "required": ["userId", "email", "createdAt", "updatedAt"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Public social directory profile with no PII, discoverable by signed-in users when isDiscoverable is true.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Authenticated Firebase UID matching the document ID."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Public display name shown in chats and people directory."
+        },
+        "handle": {
+          "type": "string",
+          "description": "Social handle (without PII) for quick discovery."
+        },
+        "bio": {
+          "type": "string",
+          "description": "Short personal bio."
+        },
+        "photoUrl": {
+          "type": "string",
+          "description": "Public avatar image URL from Google profile."
+        },
+        "statusVibe": {
+          "type": "string",
+          "description": "Short current status note or vibe."
+        },
+        "isOnline": {
+          "type": "boolean",
+          "description": "Active online presence flag."
+        },
+        "onlineStatusVisible": {
+          "type": "boolean",
+          "description": "Whether this user allows peers to see online and last seen status."
+        },
+        "isDiscoverable": {
+          "type": "boolean",
+          "description": "Whether the profile appears in the People discovery directory."
+        },
+        "lastHeartbeatAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of the latest periodic foreground presence heartbeat."
+        },
+        "lastSeenAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of last activity."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when profile was created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when profile was last updated."
+        }
+      },
+      "required": ["userId", "displayName", "handle", "isOnline", "isDiscoverable", "createdAt", "updatedAt"]
+    },
+    "Conversation": {
+      "title": "Conversation",
+      "description": "Direct message or group chat conversation metadata and last-message summary.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["direct", "group"],
+          "description": "Conversation type."
+        },
+        "title": {
+          "type": "string",
+          "description": "Group channel title (empty for direct messages)."
+        },
+        "topic": {
+          "type": "string",
+          "description": "Optional group topic or subtitle."
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "UID of the user who created the conversation."
+        },
+        "participantIds": {
+          "type": "array",
+          "description": "Bounded list of participant UIDs (max 50)."
+        },
+        "participantNames": {
+          "type": "object",
+          "description": "Map of participant UID to display name."
+        },
+        "participantPhotos": {
+          "type": "object",
+          "description": "Map of participant UID to avatar URL."
+        },
+        "lastMessageText": {
+          "type": "string",
+          "description": "Preview text of the latest message."
+        },
+        "lastMessageSenderId": {
+          "type": "string",
+          "description": "UID of the latest message sender."
+        },
+        "lastMessageSenderName": {
+          "type": "string",
+          "description": "Display name of the latest message sender."
+        },
+        "lastMessageType": {
+          "type": "string",
+          "description": "Type of latest message (text, image, poll, audio)."
+        },
+        "lastMessageAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of latest message."
+        },
+        "unreadCounts": {
+          "type": "object",
+          "description": "Map of participant UID to unread message count."
+        },
+        "pinnedBy": {
+          "type": "object",
+          "description": "Map of participant UID to boolean indicating pinned conversation."
+        },
+        "mutedBy": {
+          "type": "object",
+          "description": "Map of participant UID to boolean indicating muted notifications."
+        },
+        "typingBy": {
+          "type": "object",
+          "description": "Map of participant UID to server timestamp while actively typing."
+        },
+        "recordingBy": {
+          "type": "object",
+          "description": "Map of participant UID to server timestamp while recording a voice note."
+        },
+        "pinnedMessageId": {
+          "type": "string",
+          "description": "Optional pinned message ID inside the thread."
+        },
+        "pinnedMessagePreview": {
+          "type": "string",
+          "description": "Optional preview text of the pinned message."
+        },
+        "pinnedMessageSenderName": {
+          "type": "string",
+          "description": "Optional sender name of the pinned message."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when conversation was created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when conversation was updated."
+        }
+      },
+      "required": ["type", "title", "createdBy", "participantIds", "createdAt", "updatedAt"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Individual chat message inside a conversation with denormalized participantIds for flat rule evaluation.",
+      "type": "object",
+      "properties": {
+        "conversationId": {
+          "type": "string",
+          "description": "Parent conversation ID."
+        },
+        "senderId": {
+          "type": "string",
+          "description": "UID of message author."
+        },
+        "senderName": {
+          "type": "string",
+          "description": "Display name of message author."
+        },
+        "senderPhotoUrl": {
+          "type": "string",
+          "description": "Avatar URL of message author."
+        },
+        "participantIds": {
+          "type": "array",
+          "description": "Denormalized participant UID list matching parent conversation."
+        },
+        "type": {
+          "type": "string",
+          "enum": ["text", "image", "poll", "audio"],
+          "description": "Message payload type."
+        },
+        "text": {
+          "type": "string",
+          "description": "Message text body or caption."
+        },
+        "imageBase64": {
+          "type": "string",
+          "description": "Optional compressed JPEG base64 thumbnail string."
+        },
+        "audioBase64": {
+          "type": "string",
+          "description": "Optional compressed AAC voice note encoded as Base64."
+        },
+        "audioDurationSec": {
+          "type": "integer",
+          "description": "Duration in seconds of voice note attachment."
+        },
+        "isForwarded": {
+          "type": "boolean",
+          "description": "Whether this message was forwarded from another chat."
+        },
+        "replyToMessageId": {
+          "type": "string",
+          "description": "Optional ID of replied message."
+        },
+        "replyToSenderName": {
+          "type": "string",
+          "description": "Optional sender name of replied message."
+        },
+        "replyToPreview": {
+          "type": "string",
+          "description": "Optional text preview of replied message."
+        },
+        "reactions": {
+          "type": "object",
+          "description": "Map of participant UID to selected emoji reaction."
+        },
+        "pollQuestion": {
+          "type": "string",
+          "description": "Optional poll question text."
+        },
+        "pollOptions": {
+          "type": "array",
+          "description": "Optional list of poll option labels (max 6)."
+        },
+        "pollVotes": {
+          "type": "object",
+          "description": "Map of participant UID to chosen option index string."
+        },
+        "isEdited": {
+          "type": "boolean",
+          "description": "Whether the sender edited this message."
+        },
+        "clientMessageId": {
+          "type": "string",
+          "description": "Client-generated idempotency identifier matching local outbox entries."
+        },
+        "deliveredTo": {
+          "type": "object",
+          "description": "Map of recipient UID to delivery confirmation timestamp."
+        },
+        "readBy": {
+          "type": "object",
+          "description": "Map of recipient UID to read receipt confirmation timestamp."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when message was sent."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when message was updated."
+        }
+      },
+      "required": ["conversationId", "senderId", "senderName", "participantIds", "type", "text", "isEdited", "createdAt", "updatedAt"]
+    },
+    "CallSession": {
+      "title": "CallSession",
+      "description": "Peer-to-peer WebRTC HD voice or HD video call signaling session between two participants.",
+      "type": "object",
+      "properties": {
+        "callerId": {
+          "type": "string",
+          "description": "UID of the participant initiating the call."
+        },
+        "callerName": {
+          "type": "string",
+          "description": "Display name of caller."
+        },
+        "callerPhotoUrl": {
+          "type": "string",
+          "description": "Optional avatar URL of caller."
+        },
+        "calleeId": {
+          "type": "string",
+          "description": "UID of the recipient participant."
+        },
+        "calleeName": {
+          "type": "string",
+          "description": "Display name of callee."
+        },
+        "calleePhotoUrl": {
+          "type": "string",
+          "description": "Optional avatar URL of callee."
+        },
+        "participantIds": {
+          "type": "array",
+          "description": "Exact two-element list containing callerId and calleeId."
+        },
+        "conversationId": {
+          "type": "string",
+          "description": "Associated conversation ID for linking back to the thread."
+        },
+        "callType": {
+          "type": "string",
+          "enum": ["voice", "video"],
+          "description": "Call media mode: HD voice or HD video."
+        },
+        "qualityPreset": {
+          "type": "string",
+          "enum": ["HD_720P", "FHD_1080P", "HD_VOICE"],
+          "description": "Selected HD quality target for video resolution/bitrate or 48kHz Opus voice."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["ringing", "accepted", "declined", "ended", "missed"],
+          "description": "Signaling lifecycle state of the call."
+        },
+        "offerSdp": {
+          "type": "string",
+          "description": "WebRTC SDP offer generated by caller."
+        },
+        "answerSdp": {
+          "type": "string",
+          "description": "WebRTC SDP answer generated by callee."
+        },
+        "endedBy": {
+          "type": "string",
+          "description": "UID of participant who ended or declined the call."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp (FieldValue.serverTimestamp()) when call was initiated."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp (FieldValue.serverTimestamp()) when call state last changed."
+        }
+      },
+      "required": ["callerId", "callerName", "calleeId", "calleeName", "participantIds", "conversationId", "callType", "qualityPreset", "status", "offerSdp", "createdAt", "updatedAt"]
+    },
+    "IceCandidate": {
+      "title": "IceCandidate",
+      "description": "Trickle ICE network candidate exchanged between call participants.",
+      "type": "object",
+      "properties": {
+        "callId": {
+          "type": "string",
+          "description": "Parent call session ID."
+        },
+        "senderId": {
+          "type": "string",
+          "description": "UID of participant sending the ICE candidate."
+        },
+        "participantIds": {
+          "type": "array",
+          "description": "Denormalized participant UIDs matching parent CallSession."
+        },
+        "sdpMid": {
+          "type": "string",
+          "description": "Media stream identification tag."
+        },
+        "sdpMLineIndex": {
+          "type": "integer",
+          "description": "Zero-based index of media description in SDP."
+        },
+        "candidate": {
+          "type": "string",
+          "description": "SDP ICE candidate attribute string."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp (FieldValue.serverTimestamp()) when candidate was gathered."
+        }
+      },
+      "required": ["callId", "senderId", "participantIds", "sdpMid", "sdpMLineIndex", "candidate", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/PrivateUser" },
+      "description": "Private user account documents containing email and personal preferences, strictly isolated to owner."
+    },
+    "/user_profiles/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Public social user profiles without PII for chat display and people discovery."
+    },
+    "/conversations/{conversationId}": {
+      "schema": { "$ref": "#/entities/Conversation" },
+      "description": "Direct and group chat rooms accessible strictly to participants."
+    },
+    "/conversations/{conversationId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/Message" },
+      "description": "Messages belonging to a conversation, accessible strictly to participants."
+    },
+    "/calls/{callId}": {
+      "schema": { "$ref": "#/entities/CallSession" },
+      "description": "Active and recent WebRTC HD voice/video call signaling sessions, restricted to the two call participants."
+    },
+    "/calls/{callId}/candidates/{candidateId}": {
+      "schema": { "$ref": "#/entities/IceCandidate" },
+      "description": "Trickle ICE candidates for a WebRTC call session, readable/writable only by the two call participants."
+    }
+  }
+}

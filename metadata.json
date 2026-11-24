@@ -1,0 +1,6 @@
+{
+  "name": "Univers Chat",
+  "description": "Univers Chat — real-time iOS-inspired social messaging app with direct chats, group channels, live polls, photo sharing, tapback reactions, and Google Sign-In.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
